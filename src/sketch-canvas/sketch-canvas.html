@@ -1,0 +1,97 @@
+<link
+    rel="import"
+    href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="sketch-canvas">
+
+  <template>
+
+    <style>
+      :host {
+        display: block;
+        font-family: 'Roboto', 'Noto', sans-serif;
+        width: 100%;
+        height: 100%;
+        border: 1px solid black;
+      }
+      canvas {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+
+    <canvas
+    	id="canvas"
+    	width="[[ width ]]"
+    	height="[[ height ]]"
+    	on-mousedown="_handleStart"
+    	on-mouseup="_handleEnd"
+    	on-mousemove="_handleMove"
+    	on-touchstart="_handleStart"
+    	on-touchend="_handleEnd"
+    	on-touchmove="_handleMove"
+    >
+    </canvas>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'sketch-canvas',
+      properties: {
+      },
+      attached() {
+				this._ctx = this.$.canvas.getContext('2d');
+				this._ctx.strokeStyle = '#000000';
+				this._ctx.lineWidth = 4;
+				this._ctx.lineCap = 'round';
+      	this._animationFrameID = window.requestAnimationFrame(this._animate.bind(this));
+      },
+      detached() {
+      	window.cancelAnimationFrame(this._animationFrameID);
+      },
+      _animate(timestamp) {
+      	if (this._drawing && this._lastPos !== this._currPos) {
+      		this._ctx.moveTo(this._lastPos.x, this._lastPos.y);
+      		this._ctx.lineTo(this._currPos.x, this._currPos.y);
+      		this._ctx.stroke();
+      		this._lastPos = this._currPos;
+      	}
+      	this._animationFrameID = window.requestAnimationFrame(this._animate.bind(this));
+      },
+			// Get the position of the mouse or touch event relative to the canvas
+			_getPos(event) {
+			  let rect = this.$.canvas.getBoundingClientRect();
+			  let x, y;
+				if (event.hasOwnProperty('touches')) {
+					x = event.touches[0].clientX;
+					y = event.touches[0].clientY;
+				} else {
+					x = event.clientX;
+					y = event.clientY;
+				}
+			  return {
+			    x: x - rect.left,
+			    y: y - rect.top
+			  };
+			},
+      _handleStart(event) {
+      	this._drawing = true;
+      	this._lastPos = this._getPos(event);
+      	this._currPos = this._getPos(event);
+      	event.preventDefault();
+      },
+      _handleEnd(event) {
+      	this._drawing = false;
+      	event.preventDefault();
+      },
+      _handleMove(event) {
+      	if (this._drawing) {
+	      	this._currPos = this._getPos(event);
+	      	event.preventDefault();
+	      }
+      },
+    });
+  </script>
+
+</dom-module>

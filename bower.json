@@ -1,5 +1,5 @@
 {
-  "name": "polymer_skeleton",
+  "name": "sage",
   "authors": [
     "James Pettit <etherealmachine@gmail.com>"
   ],
@@ -22,7 +22,6 @@
     "iron-elements": "PolymerElements/iron-elements#^1.0.9",
     "paper-elements": "PolymerElements/paper-elements#^1.0.7",
     "google-web-components": "GoogleWebComponents/google-web-components#^1.0.1",
-    "page": "^1.7.0"
   },
   "resolutions": {
     "firebase": "^3.0"
