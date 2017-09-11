@@ -40,6 +40,10 @@
         width: 100%;
         height: 100%;
       }
+      textarea {
+        font-family: 'Roboto', 'Noto', sans-serif;
+        font-size: 36pt;
+      }
       div > paper-input {
         margin: 0 10px 20px 10px;
       }
@@ -129,23 +133,12 @@
     </paper-card>
 
     <paper-card hidden$="[[ !_onPage(page, 5) ]]">
-      <div class="card-content">
 
+      <div class="card-content">
         <label>
           How are a watch and a ruler similar? Write down how they are alike. They both are... what?
         </label>
         <paper-input value="{{ question1 }}"></paper-input>
-
-        <label>
-          How many nickels are in 60 cents?
-        </label>
-        <paper-input value="{{ question2 }}"></paper-input>
-
-        <label>
-          You are buying $13.45 of groceries. How much change would you receive back from a $20 bill?
-        </label>
-        <paper-input value="{{ question3 }}"></paper-input>
-
       </div>
 
       <div class="card-actions layout horizontal end-justified">
@@ -155,15 +148,48 @@
     </paper-card>
 
     <paper-card hidden$="[[ !_onPage(page, 6) ]]">
+
       <div class="card-content">
-        <p>On the last question, write “I am done” on the blank line provided.</p>
+        <label>
+          How many nickels are in 60 cents?
+        </label>
+        <paper-input value="{{ question2 }}"></paper-input>
       </div>
+
       <div class="card-actions layout horizontal end-justified">
         <paper-button on-tap="_nextPage">Next</paper-button>
       </div>
+
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 7) ]]" class="fill">
+    <paper-card hidden$="[[ !_onPage(page, 7) ]]">
+
+      <div class="card-content">
+        <label>
+          You are buying $13.45 of groceries. How much change would you receive back from a $20 bill?
+        </label>
+        <paper-input value="{{ question3 }}"></paper-input>
+      </div>
+
+      <div class="card-actions layout horizontal end-justified">
+        <paper-button on-tap="_nextPage">Next</paper-button>
+      </div>
+
+    </paper-card>
+
+    <paper-card hidden$="[[ !_onPage(page, 8) ]]">
+
+      <div class="card-content">
+        <p>On the last question, write “I am done” on the blank line provided.</p>
+      </div>
+
+      <div class="card-actions layout horizontal end-justified">
+        <paper-button on-tap="_nextPage">Next</paper-button>
+      </div>
+
+    </paper-card>
+
+    <paper-card hidden$="[[ !_onPage(page, 9) ]]" class="fill">
       <div class="card-content layout vertical">
         <label class="flex-none">Draw a picture of a clock with the time set to 3:40</label>
         <sketch-canvas class="flex-auto"></sketch-canvas>
@@ -173,36 +199,17 @@
       </div>
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 8) ]]">
-      <div class="card-content">
+    <paper-card hidden$="[[ !_onPage(page, 10) ]]">
+      <div class="card-content layout vertical">
         <label>Write down the names of 12 different animals</label>
-        <div class="layout vertical">
-          <div class="layout horizontal">
-            <paper-input value="{{ animal1 }}"></paper-input>
-            <paper-input value="{{ animal2 }}"></paper-input>
-            <paper-input value="{{ animal3 }}"></paper-input>
-            <paper-input value="{{ animal4 }}"></paper-input>
-          </div>
-          <div class="layout horizontal">
-            <paper-input value="{{ animal5 }}"></paper-input>
-            <paper-input value="{{ animal6 }}"></paper-input>
-            <paper-input value="{{ animal7 }}"></paper-input>
-            <paper-input value="{{ animal8 }}"></paper-input>
-          </div>
-          <div class="layout horizontal">
-            <paper-input value="{{ animal9 }}"></paper-input>
-            <paper-input value="{{ animal10 }}"></paper-input>
-            <paper-input value="{{ animal11 }}"></paper-input>
-            <paper-input value="{{ animal12 }}"></paper-input>
-          </div>
-        </div>
+        <textarea rows="3" value="{{ animals::input }}"></textarea>
       </div>
       <div class="card-actions layout horizontal end-justified">
         <paper-button on-tap="_nextPage">Next</paper-button>
       </div>
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 9) ]]">
+    <paper-card hidden$="[[ !_onPage(page, 11) ]]">
       <div class="card-content">
         <label>
           What were the three words you were told to remember?
@@ -214,7 +221,7 @@
       </div>
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 10) ]]">
+    <paper-card hidden$="[[ !_onPage(page, 12) ]]">
       <div class="card-content">
         <label>
           Have you finished?
@@ -226,7 +233,7 @@
       </div>
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 11) ]]">
+    <paper-card hidden$="[[ !_onPage(page, 13) ]]">
       <div class="card-content">
         <p>Thank you, your score is {{ score }} / 27.</p>
       </div>
@@ -240,7 +247,7 @@
       properties: {
         page: {
           type: Number,
-          value: 1,
+          value: 10,
         },
         name: String,
         dob: String,
@@ -250,18 +257,7 @@
         question1: String,
         question2: String,
         question3: String,
-        animal1: String,
-        animal2: String,
-        animal3: String,
-        animal4: String,
-        animal5: String,
-        animal6: String,
-        animal7: String,
-        animal8: String,
-        animal9: String,
-        animal10: String,
-        animal11: String,
-        animal12: String,
+        animals: String,
         finished: String,
         words: String,
       },
@@ -323,23 +319,7 @@
           this.score += 1;
         }
 
-        const animals = [
-          this.animal1,
-          this.animal2,
-          this.animal2,
-          this.animal3,
-          this.animal4,
-          this.animal5,
-          this.animal6,
-          this.animal7,
-          this.animal8,
-          this.animal9,
-          this.animal10,
-          this.animal11,
-          this.animal12,
-        ].filter((a) => a);
-
-        this.score += animals.length;
+        this.score += this.animals.split(' ').length;
 
         if (this.finished.toLowerCase().includes('done') ||
             this.finished.toLowerCase().includes('finished')) {
