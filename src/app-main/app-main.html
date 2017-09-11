@@ -72,12 +72,12 @@
         ></paper-input>
 
         <paper-input
-            label="Date of Birth"
+            label="Date of Birth (mm/dd/yy)"
             value="{{ dob }}"
         ></paper-input>
 
         <paper-input
-            label="What is today's date?"
+            label="What is today's date? (mm/dd/yy)"
             value="{{ today }}"
         ></paper-input>
 
@@ -117,8 +117,8 @@
       </div>
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 4) ]]" image="images/volcano.jpg">
-      <div class="card-content">
+    <paper-card hidden$="[[ !_onPage(page, 4) ]]">
+      <div class="card-content layout vertical">
         <img src="../../images/volcano.jpg" class="self-center">
         <label>Name the picture shown above</label>
         <paper-input value="{{ picture2 }}"></paper-input>
@@ -228,7 +228,7 @@
 
     <paper-card hidden$="[[ !_onPage(page, 11) ]]">
       <div class="card-content">
-        <p>Thank you, your score is being processed.</p>
+        <p>Thank you, your score is {{ score }} / 27.</p>
       </div>
     </paper-card>
     
@@ -273,6 +273,92 @@
         this.fire('pagechange', {
           page: this.page,
         });
+        if (this.page === 11) {
+          this._score();
+        }
+      },
+      _score() {
+        this.score = 0;
+
+        const d = this.today.split('/');
+        const today = new Date();
+        const month = parseInt(d[0]);
+        const day = parseInt(d[1]);
+        const year = parseInt(d[2]);
+        if (today.getDate() == day) {
+          this.score += 1;
+        }
+        if (today.getMonth()+1 == month) {
+          this.score += 1;
+        }
+        if (today.getFullYear() == year) {
+          this.score += 1;
+        }
+
+        if (this.picture1.toLowerCase() == 'wreath') {
+          this.score += 1;
+        }
+
+        if (this.picture2.toLowerCase() == 'volcano') {
+          this.score += 1;
+        }
+
+        if (this.question1.toLowerCase().includes('measure')) {
+          this.score += 1;
+        }
+
+        if (this.question2.toLowerCase().includes('12')) {
+          this.score += 1;
+        }
+
+        if (this.question3.toLowerCase().includes('6')) {
+          this.score += 1;
+        }
+
+        if (this.question3.toLowerCase().includes('55')) {
+          this.score += 1;
+        }
+
+        if (this.question3.toLowerCase().includes('6.55')) {
+          this.score += 1;
+        }
+
+        const animals = [
+          this.animal1,
+          this.animal2,
+          this.animal2,
+          this.animal3,
+          this.animal4,
+          this.animal5,
+          this.animal6,
+          this.animal7,
+          this.animal8,
+          this.animal9,
+          this.animal10,
+          this.animal11,
+          this.animal12,
+        ].filter((a) => a);
+
+        this.score += animals.length;
+
+        if (this.finished.toLowerCase().includes('done') ||
+            this.finished.toLowerCase().includes('finished')) {
+          this.score += 1;
+        }
+
+        if (this.finished.toLowerCase().includes('I am done')) {
+          this.score += 1;
+        }
+
+        if (this.words.toLowerCase().includes('house')) {
+          this.score += 1;
+        }
+        if (this.words.toLowerCase().includes('tree')) {
+          this.score += 1;
+        }
+        if (this.words.toLowerCase().includes('music')) {
+          this.score += 1;
+        }
       }
     });
   </script>
