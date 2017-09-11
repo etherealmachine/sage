@@ -47,6 +47,9 @@
       div > paper-input {
         margin: 0 10px 20px 10px;
       }
+      paper-button {
+        font-size: 26pt !important;
+      }
       paper-button.submit {
         color: white;
         background-color: var(--paper-green-800);
@@ -66,19 +69,54 @@
       }
     </style>
 
-    <paper-card hidden$="[[ !_onPage(page, 1) ]]">
+    <paper-card id="page1" hidden$="[[ !_onPage(page, 1) ]]">
 
       <div class="card-content">
 
         <paper-input
+            autofocus
             label="Your Name (First and Last)"
             value="{{ name }}"
         ></paper-input>
+
+      </div>
+
+      <div class="card-actions layout horizontal end-justified">
+        <paper-button
+            on-tap="_nextPage"
+            disabled="[[ _nextDisabled ]]"
+            raised>
+          Next
+        </paper-button>
+      </div>
+
+    </paper-card>
+
+    <paper-card id="page2" hidden$="[[ !_onPage(page, 2) ]]">
+
+      <div class="card-content">
 
         <paper-input
             label="Date of Birth (mm/dd/yy)"
             value="{{ dob }}"
         ></paper-input>
+
+      </div>
+
+      <div class="card-actions layout horizontal end-justified">
+        <paper-button
+            on-tap="_nextPage"
+            disabled="[[ _nextDisabled ]]"
+            raised>
+          Next
+        </paper-button>
+      </div>
+
+    </paper-card>
+
+    <paper-card id="page3" hidden$="[[ !_onPage(page, 3) ]]">
+
+      <div class="card-content">
 
         <paper-input
             label="What is today's date? (mm/dd/yy)"
@@ -88,12 +126,17 @@
       </div>
 
       <div class="card-actions layout horizontal end-justified">
-        <paper-button on-tap="_nextPage">Next</paper-button>
+        <paper-button
+            on-tap="_nextPage"
+            disabled="[[ _nextDisabled ]]"
+            raised>
+          Next
+        </paper-button>
       </div>
 
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 2) ]]">
+    <paper-card id="page4" hidden$="[[ !_onPage(page, 4) ]]">
 
       <div class="card-content">
         <p>On the next to last question, write the following words in any order:</p>
@@ -105,34 +148,49 @@
       </div>
 
       <div class="card-actions layout horizontal end-justified">
-        <paper-button on-tap="_nextPage">Next</paper-button>
+        <paper-button
+            on-tap="_nextPage"
+            disabled="[[ _nextDisabled ]]"
+            raised>
+          Next
+        </paper-button>
       </div>
 
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 3) ]]">
+    <paper-card id="page5" hidden$="[[ !_onPage(page, 5) ]]">
       <div class="card-content layout vertical">
         <img src="../../images/wreath.jpg" class="self-center">
         <label>Name the picture shown above</label>
         <paper-input value="{{ picture1 }}"></paper-input>
       </div>
       <div class="card-actions layout horizontal end-justified">
-        <paper-button on-tap="_nextPage">Next</paper-button>
+        <paper-button
+            on-tap="_nextPage"
+            disabled="[[ _nextDisabled ]]"
+            raised>
+          Next
+        </paper-button>
       </div>
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 4) ]]">
+    <paper-card id="page6" hidden$="[[ !_onPage(page, 6) ]]">
       <div class="card-content layout vertical">
         <img src="../../images/volcano.jpg" class="self-center">
         <label>Name the picture shown above</label>
         <paper-input value="{{ picture2 }}"></paper-input>
       </div>
       <div class="card-actions layout horizontal end-justified">
-        <paper-button on-tap="_nextPage">Next</paper-button>
+        <paper-button
+            on-tap="_nextPage"
+            disabled="[[ _nextDisabled ]]"
+            raised>
+          Next
+        </paper-button>
       </div>
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 5) ]]">
+    <paper-card id="page7" hidden$="[[ !_onPage(page, 7) ]]">
 
       <div class="card-content">
         <label>
@@ -142,12 +200,17 @@
       </div>
 
       <div class="card-actions layout horizontal end-justified">
-        <paper-button on-tap="_nextPage">Next</paper-button>
+        <paper-button
+            on-tap="_nextPage"
+            disabled="[[ _nextDisabled ]]"
+            raised>
+          Next
+        </paper-button>
       </div>
 
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 6) ]]">
+    <paper-card id="page8" hidden$="[[ !_onPage(page, 8) ]]">
 
       <div class="card-content">
         <label>
@@ -157,12 +220,17 @@
       </div>
 
       <div class="card-actions layout horizontal end-justified">
-        <paper-button on-tap="_nextPage">Next</paper-button>
+        <paper-button
+            on-tap="_nextPage"
+            disabled="[[ _nextDisabled ]]"
+            raised>
+          Next
+        </paper-button>
       </div>
 
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 7) ]]">
+    <paper-card id="page9" hidden$="[[ !_onPage(page, 9) ]]">
 
       <div class="card-content">
         <label>
@@ -172,44 +240,64 @@
       </div>
 
       <div class="card-actions layout horizontal end-justified">
-        <paper-button on-tap="_nextPage">Next</paper-button>
+        <paper-button
+            on-tap="_nextPage"
+            disabled="[[ _nextDisabled ]]"
+            raised>
+          Next
+        </paper-button>
       </div>
 
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 8) ]]">
+    <paper-card id="page10" hidden$="[[ !_onPage(page, 10) ]]">
 
       <div class="card-content">
         <p>On the last question, write “I am done” on the blank line provided.</p>
       </div>
 
       <div class="card-actions layout horizontal end-justified">
-        <paper-button on-tap="_nextPage">Next</paper-button>
+        <paper-button
+            on-tap="_nextPage"
+            disabled="[[ _nextDisabled ]]"
+            raised>
+          Next
+        </paper-button>
       </div>
 
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 9) ]]" class="fill">
+    <paper-card id="page11" hidden$="[[ !_onPage(page, 11) ]]" class="fill">
       <div class="card-content layout vertical">
         <label class="flex-none">Draw a picture of a clock with the time set to 3:40</label>
         <sketch-canvas class="flex-auto"></sketch-canvas>
       </div>
       <div class="card-actions layout horizontal end-justified">
-        <paper-button on-tap="_nextPage">Next</paper-button>
+        <paper-button
+            on-tap="_nextPage"
+            disabled="[[ _nextDisabled ]]"
+            raised>
+          Next
+        </paper-button>
       </div>
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 10) ]]">
+    <paper-card id="page12" hidden$="[[ !_onPage(page, 12) ]]">
       <div class="card-content layout vertical">
         <label>Write down the names of 12 different animals</label>
         <textarea rows="3" value="{{ animals::input }}"></textarea>
       </div>
       <div class="card-actions layout horizontal end-justified">
-        <paper-button on-tap="_nextPage">Next</paper-button>
+        <paper-button
+            on-tap="_nextPage"
+            disabled="[[ _nextDisabled ]]"
+            raised>
+          Next
+        </paper-button>
       </div>
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 11) ]]">
+    <paper-card id="page13" hidden$="[[ !_onPage(page, 13) ]]">
       <div class="card-content">
         <label>
           What were the three words you were told to remember?
@@ -217,11 +305,16 @@
         <paper-input value="{{ words }}"></paper-input>
       </div>
       <div class="card-actions layout horizontal end-justified">
-        <paper-button on-tap="_nextPage">Next</paper-button>
+        <paper-button
+            on-tap="_nextPage"
+            disabled="[[ _nextDisabled ]]"
+            raised>
+          Next
+        </paper-button>
       </div>
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 12) ]]">
+    <paper-card id="page14" hidden$="[[ !_onPage(page, 14) ]]">
       <div class="card-content">
         <label>
           Have you finished?
@@ -229,11 +322,15 @@
         <paper-input value="{{ finished }}"></paper-input>
       </div>
       <div class="card-actions layout horizontal end-justified">
-        <paper-button class="submit" on-tap="_nextPage" raised>Submit</paper-button>
+        <paper-button
+            class="submit"
+            on-tap="_nextPage"
+            disabled="[[ _nextDisabled ]]"
+            raised>Submit</paper-button>
       </div>
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 13) ]]">
+    <paper-card id="page15" hidden$="[[ !_onPage(page, 15) ]]">
       <div class="card-content">
         <p>Thank you, your score is {{ score }} / 27.</p>
       </div>
@@ -260,6 +357,10 @@
         animals: String,
         finished: String,
         words: String,
+        _nextDisabled: {
+          type: Boolean,
+          value: false,
+        },
       },
       _onPage(onPage, wantPage) {
         return onPage == wantPage;
@@ -269,9 +370,17 @@
         this.fire('pagechange', {
           page: this.page,
         });
-        if (this.page === 11) {
+        const nextInput = this.$$('#page'+this.page).querySelector('paper-input');
+        if (nextInput) {
+          nextInput.focus();
+        }
+        if (this.page === 15) {
           this._score();
         }
+        this._nextDisabled = true;
+        window.setTimeout(() => {
+          this._nextDisabled = false;
+        }, 2000);
       },
       _score() {
         this.score = 0;
