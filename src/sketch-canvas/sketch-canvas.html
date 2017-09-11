@@ -41,14 +41,25 @@
       properties: {
       },
       attached() {
-				this._ctx = this.$.canvas.getContext('2d');
-				this._ctx.strokeStyle = '#000000';
-				this._ctx.lineWidth = 4;
-				this._ctx.lineCap = 'round';
-      	this._animationFrameID = window.requestAnimationFrame(this._animate.bind(this));
+        this._setup();
+        window.addEventListener('pagechange', this._setup.bind(this));
       },
       detached() {
       	window.cancelAnimationFrame(this._animationFrameID);
+      },
+      _setup() {
+        const style = window.getComputedStyle(this);
+        this.width = style.width.replace('px', '');
+        this.height = style.height.replace('px', '');
+        this._ctx = this.$.canvas.getContext('2d');
+        this._ctx.strokeStyle = '#000000';
+        this._ctx.lineWidth = 4;
+        this._ctx.lineCap = 'round';
+        if (this.width && this.height) {
+          this._animationFrameID = window.requestAnimationFrame(this._animate.bind(this));
+        } else {
+          window.cancelAnimationFrame(this._animationFrameID);
+        }
       },
       _animate(timestamp) {
       	if (this._drawing && this._lastPos !== this._currPos) {

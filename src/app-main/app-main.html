@@ -27,18 +27,38 @@
 
     <style is="custom-style" include="iron-flex iron-flex-alignment">
       :host {
-        display: flex;
         font-family: 'Roboto', 'Noto', sans-serif;
-        margin: 50px 0 0 0;
+        font-size: 18pt;
         @apply(--layout-vertical);
         @apply(--layout-center);
+        --paper-input-container-label: {
+          font-size: 14pt !important;
+        };
+        --paper-input-container-input: {
+          font-size: 18pt !important;
+        };
+        width: 100%;
+        height: 100%;
       }
       div > paper-input {
-        margin: 0 10px 0 10px;
+        margin: 0 10px 20px 10px;
       }
       paper-button.submit {
         color: white;
         background-color: var(--paper-green-800);
+      }
+      .fill {
+        width: 100%;
+        @apply(--layout-flex);
+      }
+      paper-card {
+        @apply(--layout-vertical);
+      }
+      .card-content {
+        @apply(--layout-flex-auto);
+      }
+      .card-actions {
+        @apply(--layout-flex-none);
       }
     </style>
 
@@ -53,13 +73,11 @@
 
         <paper-input
             label="Date of Birth"
-            type="date"
             value="{{ dob }}"
         ></paper-input>
 
         <paper-input
             label="What is today's date?"
-            type="date"
             value="{{ today }}"
         ></paper-input>
 
@@ -90,7 +108,7 @@
 
     <paper-card hidden$="[[ !_onPage(page, 3) ]]" image="images/wreath.jpg">
       <div class="card-content">
-        <h3>Name the picture shown above</h3>
+        <label>Name the picture shown above</label>
         <paper-input></paper-input>
       </div>
       <div class="card-actions layout horizontal end-justified">
@@ -100,7 +118,7 @@
 
     <paper-card hidden$="[[ !_onPage(page, 4) ]]" image="images/volcano.jpg">
       <div class="card-content">
-        <h3>Name the picture shown above</h3>
+        <label>Name the picture shown above</label>
         <paper-input></paper-input>
       </div>
       <div class="card-actions layout horizontal end-justified">
@@ -110,6 +128,7 @@
 
     <paper-card hidden$="[[ !_onPage(page, 5) ]]">
       <div class="card-content">
+
         <label>
           How are a watch and a ruler similar? Write down how they are alike. They both are... what?
         </label>
@@ -118,7 +137,7 @@
         <label>
           How many nickels are in 60 cents?
         </label>
-        <paper-input type="number"></paper-input>
+        <paper-input></paper-input>
 
         <label>
           You are buying $13.45 of groceries. How much change would you receive back from a $20 bill?
@@ -142,15 +161,10 @@
       </div>
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 7) ]]">
-      <div class="card-content">
-        <h3>Copy the picture on the left</h3>
-        <sketch-canvas
-            width="800"
-            height="600"
-            style="width: 800px; height: 600px;"
-        >
-        </sketch-canvas>
+    <paper-card hidden$="[[ !_onPage(page, 7) ]]" class="fill">
+      <div class="card-content layout vertical">
+        <label class="flex-none">Draw a picture of a clock with the time set to 3:40</label>
+        <sketch-canvas class="flex-auto"></sketch-canvas>
       </div>
       <div class="card-actions layout horizontal end-justified">
         <paper-button on-tap="_nextPage">Next</paper-button>
@@ -159,22 +173,7 @@
 
     <paper-card hidden$="[[ !_onPage(page, 8) ]]">
       <div class="card-content">
-        <h3>Draw a picture of a clock with the time set to 3:40</h3>
-        <sketch-canvas
-            width="800"
-            height="600"
-            style="width: 800px; height: 600px;"
-        >
-        </sketch-canvas>
-      </div>
-      <div class="card-actions layout horizontal end-justified">
-        <paper-button on-tap="_nextPage">Next</paper-button>
-      </div>
-    </paper-card>
-
-    <paper-card hidden$="[[ !_onPage(page, 9) ]]">
-      <div class="card-content">
-        <h3>Write down the names of 12 different animals</h3>
+        <label>Write down the names of 12 different animals</label>
         <div class="layout vertical">
           <div class="layout horizontal">
             <paper-input></paper-input>
@@ -201,13 +200,7 @@
       </div>
     </paper-card>
 
-    <!--
-    <p>Connect the dots graph</p>
-
-    <p>Move the lines / complete the squares</p>
-    -->
-
-    <paper-card hidden$="[[ !_onPage(page, 10) ]]">
+    <paper-card hidden$="[[ !_onPage(page, 9) ]]">
       <div class="card-content">
         <label>
           What were the three words you were told to remember?
@@ -219,7 +212,7 @@
       </div>
     </paper-card>
 
-    <paper-card hidden$="[[ !_onPage(page, 11) ]]">
+    <paper-card hidden$="[[ !_onPage(page, 10) ]]">
       <div class="card-content">
         <label>
           Have you finished?
@@ -227,7 +220,13 @@
         <paper-input></paper-input>
       </div>
       <div class="card-actions layout horizontal end-justified">
-        <paper-button class="submit" on-tap="submit" raised>Submit</paper-button>
+        <paper-button class="submit" on-tap="_nextPage" raised>Submit</paper-button>
+      </div>
+    </paper-card>
+
+    <paper-card hidden$="[[ !_onPage(page, 11) ]]">
+      <div class="card-content">
+        <p>Thank you, your score is being processed.</p>
       </div>
     </paper-card>
     
@@ -242,12 +241,17 @@
           value: 1,
         }
       },
+      attached() {
+      },
       _onPage(onPage, wantPage) {
         return onPage == wantPage;
       },
       _nextPage() {
         this.page += 1;
-      },
+        this.fire('pagechange', {
+          page: this.page,
+        });
+      }
     });
   </script>
 
