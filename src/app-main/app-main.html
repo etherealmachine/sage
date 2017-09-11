@@ -19,6 +19,9 @@
 
 <link
     rel="import"
+    href="../date-select/date-select.html">
+<link
+    rel="import"
     href="../sketch-canvas/sketch-canvas.html">
 
 <dom-module id="app-main">
@@ -31,12 +34,6 @@
         font-size: 36pt;
         @apply(--layout-vertical);
         @apply(--layout-center);
-        --paper-input-container-label: {
-          font-size: 20pt !important;
-        };
-        --paper-input-container-input: {
-          font-size: 36pt !important;
-        };
         width: 100%;
         height: 100%;
       }
@@ -44,8 +41,16 @@
         font-family: 'Roboto', 'Noto', sans-serif;
         font-size: 36pt;
       }
-      div > paper-input {
+      paper-input {
         margin: 0 10px 20px 10px;
+        --paper-input-container-label: {
+          font-size: 20pt !important;
+        };
+        --paper-input-container-input: {
+          font-size: 36pt !important;
+          height: 100px;
+          margin-top: 10px;
+        };
       }
       paper-button {
         font-size: 26pt !important;
@@ -95,10 +100,8 @@
 
       <div class="card-content">
 
-        <paper-input
-            label="Date of Birth (mm/dd/yy)"
-            value="{{ dob }}"
-        ></paper-input>
+        <label>What is your date of birth?</label>
+        <date-select value="{{ dob }}" initial-value="[[ dob ]]"></date-select>
 
       </div>
 
@@ -117,10 +120,8 @@
 
       <div class="card-content">
 
-        <paper-input
-            label="What is today's date? (mm/dd/yy)"
-            value="{{ today }}"
-        ></paper-input>
+        <label>What is today's date?</label>
+        <date-select value="{{ today }}" initial-value="[[ today ]]"></date-select>
 
       </div>
 
@@ -343,24 +344,77 @@
       properties: {
         page: {
           type: Number,
-          value: 1,
+          value: () => { return parseInt(window.localStorage.getItem('page')) || 1 },
         },
-        name: String,
-        dob: String,
-        today: String,
-        picture1: String,
-        picture2: String,
-        question1: String,
-        question2: String,
-        question3: String,
-        animals: String,
-        finished: String,
-        words: String,
+        name: {
+          type: String,
+          value: () => { return window.localStorage.getItem('name') || '' },
+        },
+        dob: {
+          type: Object,
+          value: () => {
+            return window.localStorage.getItem('dob') ?
+              new Date(JSON.parse(window.localStorage.getItem('dob'))) : '';
+          },
+        },
+        today: {
+          type: Object,
+          value: () => {
+            return window.localStorage.getItem('today') ?
+              new Date(JSON.parse(window.localStorage.getItem('today'))) : '';
+          },
+        },
+        picture1: {
+          type: String,
+          value: () => { return window.localStorage.getItem('picture1') || '' },
+        },
+        picture2: {
+          type: String,
+          value: () => { return window.localStorage.getItem('picture2') || '' },
+        },
+        question1: {
+          type: String,
+          value: () => { return window.localStorage.getItem('question1') || '' },
+        },
+        question2: {
+          type: String,
+          value: () => { return window.localStorage.getItem('question2') || '' },
+        },
+        question3: {
+          type: String,
+          value: () => { return window.localStorage.getItem('question3') || '' },
+        },
+        animals: {
+          type: String,
+          value: () => { return window.localStorage.getItem('animals') || '' },
+        },
+        words: {
+          type: String,
+          value: () => { return window.localStorage.getItem('words') || '' },
+        },
+        finished: {
+          type: String,
+          value: () => { return window.localStorage.getItem('finished') || '' },
+        },
         _nextDisabled: {
           type: Boolean,
           value: false,
         },
       },
+      observers: [
+        '_localStorage(page, "page")',
+        '_localStorage(name, "name")',
+        '_localStorage(dob, "dob")',
+        '_localStorage(today, "today")',
+        '_localStorage(picture1, "picture1")',
+        '_localStorage(picture2, "picture2")',
+        '_localStorage(question1, "question1")',
+        '_localStorage(question2, "question2")',
+        '_localStorage(question3, "question3")',
+        '_localStorage(animals, "animals")',
+        '_localStorage(words, "words")',
+        '_localStorage(finished, "finished")',
+      ],
       _onPage(onPage, wantPage) {
         return onPage == wantPage;
       },
@@ -377,21 +431,24 @@
           this._nextDisabled = false;
         }, 2000);
       },
+      _localStorage(newValue, field) {
+        if (newValue instanceof Date) {
+          window.localStorage.setItem(field, JSON.stringify(newValue));
+        } else if (newValue) {
+          window.localStorage.setItem(field, newValue);
+        }
+      },
       _score() {
         this.score = 0;
 
-        const d = this.today.split('/');
         const today = new Date();
-        const month = parseInt(d[0]);
-        const day = parseInt(d[1]);
-        const year = parseInt(d[2]);
-        if (today.getDate() == day) {
+        if (this.today && today.getDate() == this.today.getDate()) {
           this.score += 1;
         }
-        if (today.getMonth()+1 == month) {
+        if (this.today && today.getMonth() == this.today.getMonth()) {
           this.score += 1;
         }
-        if (today.getFullYear() == year) {
+        if (this.today && today.getFullYear() == this.today.getFullYear()) {
           this.score += 1;
         }
 
@@ -423,7 +480,8 @@
           this.score += 1;
         }
 
-        this.score += this.animals.split(' ').length;
+        const animals = this.animals.split(' ');
+        this.score += animals.filter((a) => { return a.length >= 3 }).length;
 
         if (this.finished.toLowerCase().includes('done') ||
             this.finished.toLowerCase().includes('finished')) {
@@ -443,6 +501,10 @@
         if (this.words.toLowerCase().includes('music')) {
           this.score += 1;
         }
+
+        window.localStorage.clear();
+
+        return this.score;
       }
     });
   </script>
