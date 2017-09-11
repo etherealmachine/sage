@@ -63,7 +63,7 @@
 			_getPos(event) {
 			  let rect = this.$.canvas.getBoundingClientRect();
 			  let x, y;
-				if (event.hasOwnProperty('touches')) {
+				if (event.touches !== undefined) {
 					x = event.touches[0].clientX;
 					y = event.touches[0].clientY;
 				} else {
