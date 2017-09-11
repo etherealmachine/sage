@@ -74,7 +74,6 @@
       <div class="card-content">
 
         <paper-input
-            autofocus
             label="Your Name (First and Last)"
             value="{{ name }}"
         ></paper-input>
@@ -362,11 +361,6 @@
           value: false,
         },
       },
-      ready() {
-        const firstInput = this.$.page1.querySelector('paper-input');
-        firstInput.focus();
-        firstInput.click();
-      },
       _onPage(onPage, wantPage) {
         return onPage == wantPage;
       },
@@ -375,11 +369,6 @@
         this.fire('pagechange', {
           page: this.page,
         });
-        const nextInput = this.$$('#page'+this.page).querySelector('paper-input');
-        if (nextInput) {
-          nextInput.focus();
-          nextInput.click();
-        }
         if (this.page === 15) {
           this._score();
         }
