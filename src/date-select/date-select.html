@@ -1,0 +1,120 @@
+<link
+    rel="import"
+    href="../../bower_components/polymer/polymer.html">
+<link
+    rel="import"
+    href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link
+    rel="import"
+    href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link
+    rel="import"
+    href="../../bower_components/paper-item/paper-item.html">
+<link
+    rel="import"
+    href="../../bower_components/paper-listbox/paper-listbox.html">
+
+<dom-module id="date-select">
+
+  <template>
+
+    <style is="custom-style" include="iron-flex iron-flex-alignment">
+      :host {
+      	display: flex;
+        @apply(--layout-horizontal);
+      }
+      paper-item {
+        font-size: 20pt !important;
+      }
+      paper-dropdown-menu, paper-input {
+        --paper-input-container-label: {
+          font-size: 20pt !important;
+        };
+        --paper-input-container-input: {
+          font-size: 36pt !important;
+        };
+      }
+    </style>
+
+    <paper-dropdown-menu label="Month">
+      <paper-listbox class="dropdown-content" selected="{{ month }}">
+        <paper-item>January</paper-item>
+        <paper-item>February</paper-item>
+        <paper-item>March</paper-item>
+        <paper-item>April</paper-item>
+        <paper-item>May</paper-item>
+        <paper-item>June</paper-item>
+        <paper-item>July</paper-item>
+        <paper-item>August</paper-item>
+        <paper-item>September</paper-item>
+        <paper-item>October</paper-item>
+        <paper-item>November</paper-item>
+        <paper-item>December</paper-item>
+      </paper-listbox>
+    </paper-dropdown-menu>
+
+    <paper-dropdown-menu label="Day">
+      <paper-listbox class="dropdown-content" selected="{{ day }}">
+      	<template is="dom-repeat" items="[[ days ]]" as="day">
+	        <paper-item>[[ day ]]</paper-item>
+	      </template>
+      </paper-listbox>
+    </paper-dropdown-menu>
+
+    <paper-input label="Year" value="{{ year }}"></paper-input>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'date-select',
+      properties: {
+        changed: {
+          type: Boolean,
+          value: false,
+        },
+      	month: {
+      		type: Number,
+      	},
+      	day: {
+      		type: Number,
+      	},
+      	year: {
+      		type: Number,
+      	},
+      	value: {
+      		type: Object,
+      		notify: true,
+      		computed: '_computeDate(month, day, year)',
+      	},
+        initialValue: {
+          type: Object,
+        },
+      	days: {
+      		type: Array,
+      		value: () => {
+      			const a = [];
+      			for (let i = 1; i <= 31; i++) {
+      				a.push(i);
+      			}
+      			return a;
+      		}
+      	}
+      },
+      ready() {
+        if (this.initialValue) {
+          this.month = this.initialValue.getMonth();
+          this.day = this.initialValue.getDate()-1;
+          this.year = this.initialValue.getFullYear();
+        }
+      },
+      _computeDate(month, day, year) {
+        if (this.year == '') {
+          return null;
+        }
+      	return new Date(year, month+1, day+1);
+      },
+    });
+  </script>
+
+</dom-module>
