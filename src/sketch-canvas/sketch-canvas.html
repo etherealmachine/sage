@@ -25,7 +25,7 @@
     Polymer({
       is: 'sketch-canvas',
       attached() {
-        this._setup();
+        this.async(this._setup().bind(this));
         window.addEventListener('pagechange', this._setup.bind(this));
       },
       detached() {

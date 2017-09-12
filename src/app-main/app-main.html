@@ -504,7 +504,7 @@
       _localStorage(newValue, field) {
         if (newValue instanceof Date) {
           window.localStorage.setItem(field, JSON.stringify(newValue));
-        } else if (newValue) {
+        } else {
           window.localStorage.setItem(field, newValue);
         }
       },
